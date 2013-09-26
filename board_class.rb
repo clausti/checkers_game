@@ -39,18 +39,20 @@ class Board
     end
   end
   
-  def piece_at(position) #position will be two-element array of row, col
-    # returns the piece at the given coordinates
-    row, column = position
-    @grid[row][column] #will return piece object or nil
-  end
-  
-  def move_piece(start_pos, end_pos)
-    
+  def move_piece(current_pos, end_pos) #for multiple jumps or a long slide, make one move at a time
+    piece = piece_at(current_pos)
+    #check valid move here if game does not
+    @grid[current_pos[0]][current_pos[1]] = nil
+    @grid[end_pos[0]][end_pos[1]] = piece
   end
   
   def make_king(position)
     piece_at(position).is_king = true
+  end
+  
+  def piece_at(position) #position will be two-element array of row, col
+    row, column = position
+    @grid[row][column] #will return piece object or nil
   end
   
   def iterate_through_grid(&code_block)

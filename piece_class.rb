@@ -12,21 +12,26 @@ class Piece
   end
   
   def move_delta(start_pos, end_pos)
-    #does math on the start_pos and end_pos
-    #returns the delta
+    start_row, start_col = start_pos
+    end_row, end_col = end_pos
+    [(end_row - start_row), (end_col - start_col)]
   end
   
-  def valid_move?(start_pos, end_pos) 
-    # pieces can only move forward
-    # red starts at the bottom of the board, so row deltas in game notation (array accession) will be negative
-    # white starts at top, so row deltas in game notation will be positive
-    delta = move_delta(start_pos, end_pos)
-    if @color == :white
-      
-    elsif @color == :red
-      
+  def valid_move?(start_pos, end_pos, jump = false) 
+    row_delta, col_delta = move_delta(start_pos, end_pos)
+    
+    return false if row_delta == 0
+    return false if col_delta == 0
+    return false unless (row_delta.abs == col_delta.abs)
+    return false if col_delta > 1 unless (jump || is_king)
+    
+    if @color == :white && !is_king
+      return false if row_delta < 0
+    elsif @color == :red && !is_king
+      return false if row_delta > 0
     end
-    #return true or false
+    
+    true
   end
   
 end

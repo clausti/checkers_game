@@ -1,5 +1,6 @@
 require 'colorize'
 require './piece_class.rb'
+require './checkers_errors.rb'
 
 class Board
   
@@ -11,16 +12,12 @@ class Board
   def populate_board
     iterate_through_grid do |square_contents, row_idx, col_idx|
       if (row_idx + col_idx).odd?
-        puts "green square"
         if row_idx == 0 || row_idx == 1 || row_idx == 2
-          puts "white row"
           @grid[row_idx][col_idx] = Piece.new(:white)
         elsif row_idx == 5 || row_idx == 6 || row_idx == 7
-          puts "red row"
           @grid[row_idx][col_idx] = Piece.new(:red)
         end
       else  
-        puts "yellow square"
         square_contents = nil
       end
     end
@@ -39,6 +36,10 @@ class Board
     end
   end
   
+  def valid_move?(start_pos, end_pos)
+    piece_at(start_pos, end_pos).valid_move?
+  end
+  
   def move_piece(current_pos, end_pos) #for multiple jumps or a long slide, make one move at a time
     piece = piece_at(current_pos)
     #check valid move here if game does not
@@ -47,7 +48,7 @@ class Board
   end
   
   def make_king(position)
-    piece_at(position).is_king = true
+    piece_at(position).king
   end
   
   def piece_at(position) #position will be two-element array of row, col

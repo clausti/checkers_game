@@ -24,6 +24,14 @@ class Piece
     [(end_row - start_row), (end_col - start_col)]
   end
   
+  def jumped_square(start_pos, end_pos) #assumes valid jump, [2, 2] move delta
+    start_row, start_col = start_pos
+    end_row, end_col = end_pos
+    jumped_row = (start_row + end_row) / 2
+    jumped_col = (start_col + end_col) / 2
+    [jumped_row, jumped_col]
+  end
+  
   def valid_move?(start_pos, end_pos, jump = false)
     row_delta, col_delta = move_delta(start_pos, end_pos)
     

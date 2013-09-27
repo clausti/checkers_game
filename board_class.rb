@@ -37,18 +37,44 @@ class Board
   end
   
   def valid_move?(start_pos, end_pos)
-    piece_at(start_pos, end_pos).valid_move?
+    jump = is_jump?(start_pos, end_pos)
+    piece_at(start_pos, end_pos, jump).valid_move?
+  end
+  
+  def is_jump?(start_pos, end_pos)
+    piece = piece_at(start_pos)
+    row_delta, col_delta = piece.move_delta(start_pos, end_pos)
+    jumped_square = jump_square(start_pos, end_pos)
+    return false unless row_delta.abs == 2
+    return false if piece.color == piece_at(jumped_square).color
+    return false unless piece_at(end_pos).nil?
+    true
+  end
+  
+  def jump_square(start_pos, end_pos) #assumes valid jump, [2, 2] move delta
+    start_row, start_col = start_pos
+    end_row, end_col = end_pos
+    jumped_row = (start_row + end_row) / 2
+    jumped_col = (start_col + end_col) / 2
+    [jumped_row, jumped_col]
   end
   
   def move_piece(current_pos, end_pos) #for multiple jumps or a long slide, make one move at a time
     piece = piece_at(current_pos)
-    #check valid move here if game does not
     @grid[current_pos[0]][current_pos[1]] = nil
     @grid[end_pos[0]][end_pos[1]] = piece
   end
   
   def make_king(position)
     piece_at(position).king
+  end
+  
+  def has_no_piece?(color)
+    iterate_through_grid do |square_contents, row_idx, col_idx|
+      next if square_contents.nil?
+      return false if square_contents.color == color
+    end
+    true
   end
   
   def piece_at(position) #position will be two-element array of row, col
@@ -64,5 +90,4 @@ class Board
     end
   end
     
-  
 end

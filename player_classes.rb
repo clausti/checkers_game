@@ -1,13 +1,16 @@
 class HumanPlayer
+  attr_reader :color
+  
   def initialize(color)
     @color = color
   end
   
-  def move
-    #prompt for input, store input
-    #raise StandardError, "informative message" if invalid input
-    #needs to return a two-D two_element array [[start_row, start_col], [end_row, end_col]]
-    
+  def move   
+    print "Move from? "
+    start_pos = gets.chomp.split(', ').map! {|el| el.to_i}
+    print "Move to? "
+    end_pos = gets.chomp.split(', ').map! {|el| el.to_i}
+    [start_pos, end_pos]
   end
 
 end

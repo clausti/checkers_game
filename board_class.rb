@@ -23,11 +23,10 @@ class Board
   end
   
   def render
-    puts " 0 1 2 3 4 5 6 7".rjust(22, " ")
     iterate_through_grid do |square_contents, row_idx, col_idx|
       background_col = :green if (row_idx + col_idx).odd?
       background_col = :yellow if (row_idx + col_idx).even?
-      print "Row #{row_idx}:" if col_idx == 0
+      print "Row: #{8 - row_idx} " if col_idx == 0
       if square_contents.nil?
         print "  ".colorize( :background => background_col)
       elsif square_contents.class == Piece
@@ -35,6 +34,7 @@ class Board
       end 
       puts if col_idx == 7
     end
+    puts " a b c d e f g h ".rjust(23, " ")
   end
   
   def has_no_pieces?(color)

@@ -55,7 +55,7 @@ class CheckersGame
   end
   
   def ask_player_move_input
-    start_pos, end_pos = @active_player.move
+    start_pos, end_pos = @active_player.input_move
     raise StandardError, "There's no piece there!" if @board.piece_at(start_pos).nil?
     raise StandardError, "That's not your piece!" if @board.piece_at(start_pos).color != @active_player.color
     [start_pos, end_pos]
